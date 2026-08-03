@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.andrestubbe</groupId>
-    <artifactId>FastChunk</artifactId>
+    <artifactId>FastContentChunk</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
-    <name>FastChunk</name>
-    <description>Native SIMD FastChunk tokenizer with JNI wrapper for FastJava</description>
+    <name>FastContentChunk</name>
+    <description>Native SIMD FastContentChunk tokenizer with JNI wrapper for FastJava</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

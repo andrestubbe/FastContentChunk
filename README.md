@@ -11,7 +11,7 @@ FastChunk implements a whitespace-based tokenizer using SSE2/AVX-friendly blocks
 +
 - `native/fastchunk` — C++ SIMD tokenizer + JNI glue (CMake build)
 +
-- `src/main/java/fastaichunk` — Java JNI wrapper `FastChunkNative` (small API)
+- `src/main/java/fastcontentchunk` — Java JNI wrapper `FastContentChunkNative` (small API)
 +
 - `README.md` — this document
 +
@@ -46,7 +46,7 @@ cmake --build . --config Release
 +
 - Place the native library on `java.library.path` or load it via `System.load("<path>/fastchunk.dll")`.
 +
-- Call `fastaichunk.FastChunkNative.chunk(text, maxTokens, overlapTokens)` which returns `FastChunkNative.Chunk[]`.
+- Call `fastcontentchunk.FastContentChunkNative.chunk(text, maxTokens, overlapTokens)` which returns `FastContentChunkNative.Chunk[]`.
 +
 
 ## Example (Java)
@@ -65,7 +65,7 @@ try {
 +
 - Tokenization currently treats ASCII whitespace (space, tab, CR, LF) as separators — UTF‑8 multibyte boundaries are preserved since we operate on byte indices and only split on ASCII bytes.
 - SIMD path uses SSE2 intrinsics; add AVX2/AVX512 tuned paths and runtime CPU dispatch for additional speedups.
-- JNI glue constructs `fastaichunk.FastChunkNative.Chunk` objects directly — keep signatures stable when refactoring.
+- JNI glue constructs `fastcontentchunk.FastContentChunkNative.Chunk` objects directly — keep signatures stable when refactoring.
 +
 ## Contributing & Packaging
 +
