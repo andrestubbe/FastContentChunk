@@ -1,5 +1,6 @@
 
-# FastChunk 0.1.0 — SIMD FastChunk tokenizer (C++ / JNI)
+
+# FastContentChunk 0.1.0 — SIMD FastContentChunk tokenizer (C++ / JNI)
 
 High-performance, SIMD-friendly tokenization and stable chunking for RAG pipelines, with a tiny Java JNI wrapper for easy integration into the FastJava ecosystem.
 
