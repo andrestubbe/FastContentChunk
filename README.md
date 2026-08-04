@@ -10,7 +10,7 @@
 
 **⚡ High-performance native tokenizer (SIMD-accelerated) exposed to Java via JNI.**
 
-**FastContentChunk** provides a SIMD-accelerated native tokenizer for high-performance text chunking. It is intended to be used alongside **[FastContentParse](https://github.com/andrestubbe/FastContentParse)** to accelerate tokenization and chunking in RAG pipelines. The module includes a native C++ implementation with JNI bindings for seamless Java integration.
+**FastContentChunk** provides a SIMD-accelerated native tokenizer for high-performance text chunking. It is intended to be used alongside **[FastContentParse](https://github.com/andrestubbe/FastContentParse)** to accelerate tokenization and chunking in RAG pipelines. The module includes a native C++ implementation with JNI bindings for seamless Java integration, with a Java fallback for environments where native compilation is not available.
 
 ---
 
