@@ -1,82 +1,188 @@
+# FastContentChunk 0.1.0 — SIMD Tokenizer + JNI Glue for FastJava
 
+[![Status](https://img.shields.io/badge/status-0.1.0-brightgreen.svg)](https://github.com/andrestubbe/FastContentChunk/releases/tag/0.1.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Java](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.java.com)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010+-lightgrey.svg)]()
+[![JitPack](https://img.shields.io/badge/JitPack-ready-green.svg)](https://jitpack.io/#andrestubbe/FastContentChunk)
 
-# FastContentChunk 0.1.0 — SIMD FastContentChunk tokenizer (C++ / JNI)
+---
 
-High-performance, SIMD-friendly tokenization and stable chunking for RAG pipelines, with a tiny Java JNI wrapper for easy integration into the FastJava ecosystem.
+**⚡ High-performance native tokenizer (SIMD-accelerated) exposed to Java via JNI.**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey.svg)]()
+**FastContentChunk** provides a SIMD-accelerated native tokenizer for high-performance text chunking. It is intended to be used alongside **[FastContentParse](https://github.com/andrestubbe/FastContentParse)** to accelerate tokenization and chunking in RAG pipelines. The module includes a native C++ implementation with JNI bindings for seamless Java integration.
 
-FastChunk implements a whitespace-based tokenizer using SSE2/AVX-friendly blocks and produces overlapping token-count-based chunks suitable for downstream embedding and retrieval.
+---
 
-## Contents
-+
-- `native/fastchunk` — C++ SIMD tokenizer + JNI glue (CMake build)
-+
-- `src/main/java/fastcontentchunk` — Java JNI wrapper `FastContentChunkNative` (small API)
-+
-- `README.md` — this document
-+
-## Key Features
-+
-- SIMD-friendly token scanning using 16/32-byte blocks for fast whitespace detection
-+
-- Stable token start/end byte indices (UTF-8 safe for ASCII-tokenization scenarios)
-+
-- Overlapping chunks by token count (stable `id` per chunk)
-+
-## Quick build & demo (Windows)
-+
-1) Build Java wrapper JAR (produces `target/FastChunk-0.1.0.jar`):
+## Table of Contents
+
+- [Why FastContentChunk?](#why-fastcontentchunk)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [API Quick Reference](#api-quick-reference)
+- [Installation](#installation)
+- [Documentation](#documentation)
+- [Platform Support](#platform-support)
+- [License](#license)
+- [Related Projects](#related-projects)
+
+---
+
+## Why FastContentChunk?
+
+Standard Java tokenization libraries often struggle with performance when processing large documents or high-throughput RAG pipelines. FastContentChunk addresses this by:
+
+- **SIMD Acceleration** — Uses native CPU vector instructions for faster text processing.
+- **Zero-Java Overhead** — Native implementation bypasses JVM limitations for raw text operations.
+- **Seamless Integration** — Designed to work directly with FastContentParse for end-to-end content processing.
+- **JNI Bridge** — Clean Java API with native performance under the hood.
+
+---
+
+## Quick Start
+
+Build native library and run demo (Windows):
 
 ```powershell
-mvn -f FastChunk/pom.xml -DskipTests=true package
+cd FastContentChunk
+call compile.bat
+call mvn clean package -DskipTests
+call run-demo.bat
 ```
-+
-2) Build native library (CMake):
 
-```powershell
-cd FastChunk\native\fastchunk
-mkdir build
-cd build
-cmake ..
-cmake --build . --config Release
-# resulting native library: fastchunk.dll / libfastchunk.so in build dir
-```
-+
-3) Use from Java:
-+
-- Place the native library on `java.library.path` or load it via `System.load("<path>/fastchunk.dll")`.
-+
-- Call `fastcontentchunk.FastContentChunkNative.chunk(text, maxTokens, overlapTokens)` which returns `FastContentChunkNative.Chunk[]`.
-+
-
-## Example (Java)
-+
 ```java
-// fallback-aware usage
-try {
-	FastChunkNative.Chunk[] chunks = FastChunkNative.chunk(text, 128, 16);
-	for (var c : chunks) System.out.println(c.id + ": " + c.text);
-} catch (UnsatisfiedLinkError e) {
-	// fallback to Java chunking (see FastContentParse)
-+}
+import fastcontentchunk.FastContentChunkNative;
+
+public class DemoChunking {
+    public static void main(String[] args) {
+        String text = "This is a sample document text to chunk using the native tokenizer.";
+        FastContentChunkNative.Chunk[] chunks = FastContentChunkNative.chunk(text, 60, 10);
+
+        for (FastContentChunkNative.Chunk chunk : chunks) {
+            System.out.printf("Chunk %d: %s\n", chunk.id, chunk.text);
+        }
+    }
+}
 ```
-+
-## Notes for maintainers
-+
-- Tokenization currently treats ASCII whitespace (space, tab, CR, LF) as separators — UTF‑8 multibyte boundaries are preserved since we operate on byte indices and only split on ASCII bytes.
-- SIMD path uses SSE2 intrinsics; add AVX2/AVX512 tuned paths and runtime CPU dispatch for additional speedups.
-- JNI glue constructs `fastcontentchunk.FastContentChunkNative.Chunk` objects directly — keep signatures stable when refactoring.
-+
-## Contributing & Packaging
-+
-- Use `CMake` to build native artifacts and publish platform-specific binaries as part of release assets.
-+
-- Example packaging patterns are in other FastJava repos (`FastTheme`, `FastCore`).
-+
+
+---
+
+## Features
+
+- **⚡ SIMD-Accelerated Tokenization** — Native CPU vector instructions for high-performance text processing.
+- **🔗 JNI Integration** — Clean Java API with native C++ implementation.
+- **📦 Chunk Array Output** — Returns structured `Chunk[]` objects with metadata.
+- **🚀 Zero-Java Overhead** — Bypasses JVM limitations for raw text operations.
+- **🎯 RAG Pipeline Ready** — Designed for high-throughput retrieval-augmented generation workflows.
+
+---
+
+## API Quick Reference
+
+| Method | Description |
+|--------|-------------|
+| `chunk(String text, int chunkSize, int overlap)` | Chunks text into overlapping segments using native tokenizer |
+
+---
+
+## Installation
+
+### Option 1: Maven (Recommended)
+
+Add the JitPack repository and the dependency to your `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>com.github.andrestubbe</groupId>
+        <artifactId>FastContentChunk</artifactId>
+        <version>0.1.0</version>
+    </dependency>
+    <!-- Recommended for content parsing -->
+    <dependency>
+        <groupId>com.github.andrestubbe</groupId>
+        <artifactId>FastContentParse</artifactId>
+        <version>0.1.0</version>
+    </dependency>
+    <!-- Required for native library loading -->
+    <dependency>
+        <groupId>com.github.andrestubbe</groupId>
+        <artifactId>fastcore</artifactId>
+        <version>v1.0.0</version>
+    </dependency>
+</dependencies>
+```
+
+### Option 2: Gradle (via JitPack)
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.andrestubbe:FastContentChunk:0.1.0'
+    // Recommended for content parsing
+    implementation 'com.github.andrestubbe:FastContentParse:0.1.0'
+    // Required for native library loading
+    implementation 'com.github.andrestubbe:fastcore:v1.0.0'
+}
+```
+
+### Option 3: Direct Download (No Build Tool)
+
+Download the latest JARs directly to add them to your classpath:
+
+1. 📦 **[FastContentChunk-0.1.0.jar](https://github.com/andrestubbe/FastContentChunk/releases/download/0.1.0/FastContentChunk-0.1.0.jar)** (The Core Library)
+2. 📦 **[FastContentParse-0.1.0.jar](https://github.com/andrestubbe/FastContentParse/releases/download/0.1.0/FastContentParse-0.1.0.jar)** (Recommended for content parsing)
+3. 📦 **[fastcore-0.1.0.jar](https://github.com/andrestubbe/FastCore/releases/download/0.1.0/fastcore-0.1.0.jar)** (Required Native JNI Loader)
+
+### Native Library Build Notes
+
+- The Java wrapper is `fastcontentchunk.FastContentChunkNative` and returns `Chunk[]` objects.
+- `compile.bat` uses `%ProgramFiles(x86)%\Microsoft Visual Studio` to locate the VC build environment.
+- `run-demo.bat` builds the Java module and runs `fastcontentchunk.DemoFastContentChunk`.
+- If the native library is missing, the demo will report a `UnsatisfiedLinkError` and display the required `java.library.path`.
+
+---
+
+## Documentation
+
+- **[COMPILE.md](COMPILE.md)** — Build instructions for native library
+- Native sources: `native/fastchunk`
+- JNI glue: `native/jni_fastchunk.cpp`
+- Java wrapper: `src/main/java/fastcontentchunk/FastContentChunkNative.java`
+
+---
+
+## Platform Support
+
+| Platform | Status |
+|----------|--------|
+| Windows 10/11 | ✅ Fully Supported |
+| Linux | 🚧 Planned |
+| macOS | 🚧 Planned |
+
+---
+
 ## License
-+
-MIT — see `LICENSE`.
-+
-**Made with ⚡ by Andre Stubbe**
-+
+
+MIT License — See [LICENSE](LICENSE) file for details.
+
+---
+
+## Related Projects
+
+- [FastContentParse](https://github.com/andrestubbe/FastContentParse) — Java content parser for text extraction and normalization
+- [FastCore](https://github.com/andrestubbe/FastCore) — Native JNI loader for FastJava libraries
+- [FastPreview](https://github.com/andrestubbe/FastPreview) — Content preview and rendering engine
+
+---
+
+**Part of the FastJava Ecosystem** — *small, fast, and practical Java modules.*
