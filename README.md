@@ -81,7 +81,7 @@ Standard Java tokenization libraries often struggle with performance when proces
 
 ## Architecture Overview
 
-**FastContentParse (The Parser)**  
+**[FastContentParse](https://github.com/andrestubbe/FastContentParse) (The Parser)**  
 Converts unstructured binary documents (PDF, RTF, Markdown, TXT) into normalized UTF-8 text streams.
 
 **FastContentChunk (This Library — The Strategy Engine)**  
@@ -91,11 +91,11 @@ Segments normalized text streams into contextual passages.
 - **`SENTENCES`**: Splits on sentence boundaries with abbreviation protection.
 - **`TOKENS`**: Fixed SIMD-accelerated token window.
 
-**FastAIVectorDB (The Vector Store)**  
+**[FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB) (The Vector Store)**  
 High-speed native C++ SIMD vector database storing small `chunk.text` embeddings for sub-5ms similarity retrieval.
 
-**FastAIRag (The Orchestration Pipeline)**  
-Higher-level RAG framework that orchestrates `FastContentParse` and `FastContentChunk`, indexes small `chunk.text` embeddings into **FastAIVectorDB**, and feeds `chunk.parentText` to **FastAIBot** for LLM response generation.
+**[FastAIRag](https://github.com/andrestubbe/FastAIRag) (The Orchestration Pipeline)**  
+Higher-level RAG framework that orchestrates **[FastContentParse](https://github.com/andrestubbe/FastContentParse)** and **FastContentChunk**, indexes small `chunk.text` embeddings into **[FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB)**, and feeds `chunk.parentText` to **[FastAIBot](https://github.com/andrestubbe/FastAIBot)** for LLM response generation.
 
 ---
 

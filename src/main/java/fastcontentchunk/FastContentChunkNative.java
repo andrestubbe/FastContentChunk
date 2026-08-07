@@ -1,5 +1,7 @@
 package fastcontentchunk;
 
+import java.util.List;
+
 public final class FastContentChunkNative {
 
     static {
@@ -39,7 +41,7 @@ public final class FastContentChunkNative {
             return new Chunk[0];
         }
 
-        java.util.List<Chunk> chunks = new java.util.ArrayList<>();
+        List<Chunk> chunks = new java.util.ArrayList<>();
         String[] tokens = text.split("\\s+");
         
         int id = 0;

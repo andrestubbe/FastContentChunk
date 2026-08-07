@@ -1,6 +1,7 @@
 package fastcontentchunk;
 
 public final class ChunkConfig {
+
     public static final int DEFAULT_MAX_TOKENS = 512;
     public static final int DEFAULT_OVERLAP_TOKENS = 64;
     public static final ChunkMode DEFAULT_MODE = ChunkMode.RECURSIVE;

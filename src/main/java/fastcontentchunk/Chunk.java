@@ -1,6 +1,7 @@
 package fastcontentchunk;
 
 public final class Chunk {
+
     public final int id;
     public final String text;
     public final String overlapText;
