@@ -85,15 +85,15 @@ Standard Java tokenization libraries often struggle with performance when proces
 **FastContentParse (The Parser)**  
 Converts unstructured binary documents (PDF, RTF, Markdown, TXT) into normalized UTF-8 text streams.
 
-**FastContentChunk (The Strategy Engine)**  
+**FastContentChunk (This Library — The Strategy Engine)**  
 Segments normalized text streams into contextual passages.
 - **`RECURSIVE`**: Hierarchical paragraph -> sentence -> SIMD token splitting with Parent-Child context.
 - **`PARAGRAPHS`**: Splits strictly on structural paragraph breaks (`\n\n`).
 - **`SENTENCES`**: Splits on sentence boundaries with abbreviation protection.
 - **`TOKENS`**: Fixed SIMD-accelerated token window.
 
-**FastAIRag (The Vector Index & Pipeline)**  
-Indexes small `chunk.text` into `FastAIVectorDB` and passes `chunk.parentText` to `FastAIBot` for LLM response generation.
+**FastAIRag (The Orchestration Pipeline)**  
+Higher-level RAG framework that uses `FastContentChunk` to segment documents, stores small `chunk.text` embeddings into **FastAIVectorDB**, and feeds `chunk.parentText` to **FastAIBot** for LLM response generation.
 
 ---
 
@@ -202,6 +202,7 @@ MIT License — See [LICENSE](LICENSE) file for details.
 
 - [FastContentParse](https://github.com/andrestubbe/FastContentParse) — Java content parser for text extraction and normalization
 - [FastAIRag](https://github.com/andrestubbe/FastAIRag) — Retrieval-Augmented Generation pipeline
+- [FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB) — High-speed vector store backed by native C++ SIMD engine
 - [FastCore](https://github.com/andrestubbe/FastCore) — Native JNI loader for FastJava libraries
 
 ---
