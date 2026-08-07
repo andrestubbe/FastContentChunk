@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html","k":"18"},{"p":"fastcontentchunk","l":"Chunk"},{"p":"fastcontentchunk","l":"ChunkConfig"},{"p":"fastcontentchunk","l":"ChunkMode","k":"9"},{"p":"fastcontentchunk","l":"FastContentChunk"},{"p":"fastcontentchunk","l":"FastContentChunkNative"}];updateSearchResults();

@@ -1,0 +1,10 @@
+target/
+build/
+*.class
+*.jar
+*.dll
+*.obj
+*.exe
+.idea/
+.vscode/
+compile-out.txt

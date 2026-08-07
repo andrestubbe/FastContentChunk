@@ -1,22 +1,37 @@
-# Compiling FastContentChunk Native Library
+# Building FastContentChunk (native tokenizer)
 
 ## Prerequisites
-- Windows 10/11 x64
-- Visual Studio 2022 (MSVC C++ Build Tools)
-- Java 17+ JDK
 
-## Build Native Library
+- Visual Studio 2019/2022 or Build Tools (VC++ compilers)
+- CMake (or use Visual Studio's packaged CMake)
+- JDK 17+ (for JNI headers and testing)
 
-Run `compile.bat` from the root directory:
+## Build Steps (Windows)
 
-```cmd
-compile.bat
+```powershell
+cd FastContentChunk\native\fastchunk
+mkdir build; cd build
+cmake ..
+cmake --build . --config Release
 ```
 
-This invokes MSVC `cl.exe` to build `build/fastchunk.dll`.
+Expected artifact: `build\Release\fastchunk.dll` or similar for your configuration.
 
-## Build Java Package
+## Java Packaging
 
-```cmd
+After building the native library, build the Java artifacts so demos can find the native binary:
+
+```powershell
+cd <repo-root>\FastContentChunk
 mvn clean package -DskipTests
 ```
+
+## Running the demo
+
+Ensure `fastchunk.dll` is on `java.library.path` and run demo as in `../README.md`.
+
+## Troubleshooting
+
+- If `cmake` is missing, use Visual Studio's CMake at:
+  `C:\Program Files\Microsoft Visual Studio\<version>\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe`
+- For `UnsatisfiedLinkError`: verify JNI symbol names and `.def` exports if present.
