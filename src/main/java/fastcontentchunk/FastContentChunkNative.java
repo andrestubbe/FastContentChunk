@@ -3,13 +3,28 @@ package fastcontentchunk;
 public final class FastContentChunkNative {
 
     static {
+        boolean loaded = false;
         try {
-            System.loadLibrary("fastchunk");
-            nativeAvailable = true;
-        } catch (UnsatisfiedLinkError e) {
-            nativeAvailable = false;
-            System.err.println("Warning: Native library not available, using Java fallback");
+            fastcore.LibraryLoader.load("fastchunk", FastContentChunkNative.class);
+            loaded = true;
+        } catch (Throwable e) {
+            try {
+                String userDir = System.getProperty("user.dir");
+                String[] dirs = {
+                    userDir + "\\build\\",
+                    userDir + "\\native\\build\\",
+                    userDir + "\\"
+                };
+                for (String dir : dirs) {
+                    try {
+                        System.load(dir + "fastchunk.dll");
+                        loaded = true;
+                        break;
+                    } catch (UnsatisfiedLinkError ignored) {}
+                }
+            } catch (Throwable ignored) {}
         }
+        nativeAvailable = loaded;
     }
 
     private static boolean nativeAvailable = false;
@@ -60,11 +75,5 @@ public final class FastContentChunkNative {
             }
         }
         return chunkJava(text, maxTokens, overlapTokens);
-    }
-
-    public static final class Chunk {
-        public final int id;
-        public final String text;
-        public Chunk(int id, String text) { this.id = id; this.text = text; }
     }
 }

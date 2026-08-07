@@ -6,7 +6,7 @@
 
     <groupId>com.github.andrestubbe</groupId>
     <artifactId>FastContentChunk</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>FastContentChunk</name>
@@ -49,6 +49,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.andrestubbe</groupId>
+            <artifactId>FastCore</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.0</version>
@@ -58,9 +63,10 @@
 
     <build>
         <resources>
-            <!-- Include native DLL in JAR (loaded from build folder) -->
+            <!-- Include native DLL in JAR at /native/ (loaded by FastCore LibraryLoader) -->
             <resource>
                 <directory>build</directory>
+                <targetPath>native</targetPath>
                 <includes>
                     <include>*.dll</include>
                 </includes>

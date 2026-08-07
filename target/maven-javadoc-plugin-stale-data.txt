@@ -1,5 +1,7 @@
 @options
 @packages
+-classpath
+'C:/Users/andre/.m2/repository/com/github/andrestubbe/FastCore/0.1.0/FastCore-0.1.0.jar'
 -encoding
 'UTF-8'
 -protected
@@ -17,30 +19,26 @@
 -docencoding
 'UTF-8'
 -doctitle
-'FastContentChunk 0.1.0 API'
+'FastContentChunk 0.1.1 API'
 -use
 -version
 -windowtitle
-'FastContentChunk 0.1.0 API'
+'FastContentChunk 0.1.1 API'
 fastcontentchunk
+C:\Users\andre\.m2\repository\com\github\andrestubbe\FastCore\0.1.0\FastCore-0.1.0.jar = 1782653997461
 C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\src\main\java = 1785761427919
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\generated-sources\annotations = 1785842557996
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\allclasses-index.html = 1785842563306
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\allpackages-index.html = 1785842563311
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\copy.svg = 1785842563404
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\element-list = 1785842563198
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\help-doc.html = 1785842563370
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\index-all.html = 1785842563356
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\index.html = 1785842563364
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\link.svg = 1785842563424
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\member-search-index.js = 1785842563319
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\module-search-index.js = 1785842563315
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\overview-tree.html = 1785842563288
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\package-search-index.js = 1785842563315
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\script.js = 1785842563402
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\search-page.js = 1785842563438
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\search.html = 1785842563360
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\search.js = 1785842563433
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\stylesheet.css = 1785842563377
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\tag-search-index.js = 1785842563319
-C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\type-search-index.js = 1785842563317
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\generated-sources\annotations = 1786111349998
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\allclasses-index.html = 1786111355053
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\allpackages-index.html = 1786111355055
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\constant-values.html = 1786111354999
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\element-list = 1786111354978
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\help-doc.html = 1786111355091
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\index-all.html = 1786111355073
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\index.html = 1786111355083
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\member-search-index.js = 1786111355061
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\module-search-index.js = 1786111355056
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\overview-tree.html = 1786111355041
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\package-search-index.js = 1786111355058
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\search.html = 1786111355080
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\tag-search-index.js = 1786111355062
+C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\target\apidocs\type-search-index.js = 1786111355060

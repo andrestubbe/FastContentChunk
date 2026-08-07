@@ -16,7 +16,7 @@ extern "C" JNIEXPORT jobjectArray JNICALL Java_fastcontentchunk_FastContentChunk
 
     std::vector<Chunk> results = fastchunk_chunk(input.c_str(), input.size(), (int)maxTokens, (int)overlapTokens);
 
-    jclass chunkClass = env->FindClass("fastcontentchunk/FastContentChunkNative$Chunk");
+    jclass chunkClass = env->FindClass("fastcontentchunk/Chunk");
     if (chunkClass == nullptr) return nullptr; // class not found
 
     jmethodID ctor = env->GetMethodID(chunkClass, "<init>", "(ILjava/lang/String;)V");
