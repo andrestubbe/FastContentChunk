@@ -1,10 +1,10 @@
-# FastContentChunk 0.1.1 [ALPHA-2026-08] — Native SIMD Strategy Engine for FastJava
+# FastContentChunk 0.1.2 — High-Performance Tokenizer and Strategy Engine for Java
 
-[![Status](https://img.shields.io/badge/status-0.1.1-brightgreen.svg)]()
+[![Status](https://img.shields.io/badge/status-0.1.2-brightgreen.svg)](https://github.com/andrestubbe/FastContentChunk/releases/tag/0.1.2)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.java.com)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010+-lightgrey.svg)]()
-[![JitPack](https://img.shields.io/badge/JitPack-0.1.1-green.svg)](https://jitpack.io/#andrestubbe/FastContentChunk)
+[![JitPack](https://img.shields.io/badge/JitPack-0.1.2-green.svg)](https://jitpack.io/#andrestubbe/FastContentChunk)
 
 **⚡ High-performance native SIMD tokenizer and multi-mode strategy chunker for RAG pipelines.**
 
@@ -145,7 +145,7 @@ FastContentChunk integrates with the FastJava ecosystem modules for content pars
     <dependency>
         <groupId>com.github.andrestubbe</groupId>
         <artifactId>FastContentChunk</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2</version>
     </dependency>
 
     <!-- FastContentParse & FastCore -->
