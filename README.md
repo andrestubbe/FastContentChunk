@@ -69,6 +69,21 @@ Standard Java tokenization libraries often struggle with performance when proces
 
 ---
 
+## Performance Benchmarks
+
+`FastContentChunk` is designed for ultra-low latency tokenization and passage chunking. In the official [JMH Benchmark](examples/Benchmark), the system measured throughput across chunking modes:
+
+```text
+Benchmark                                             Mode  Cnt    Score    Error   Units
+ChunkBenchmark.benchmarkNativeZeroAllocationOffsets  thrpt    5  202.831 ± 70.923  ops/ms
+ChunkBenchmark.benchmarkTokensChunking               thrpt    5   57.673 ± 21.130  ops/ms
+ChunkBenchmark.benchmarkRecursiveChunking            thrpt    5   25.415 ± 10.370  ops/ms
+```
+
+> **202,000 Operations per Second (Zero-Allocation)**: With the native AVX2 SIMD `chunkToOffsets` JNI engine, `FastContentChunk` processes document token boundaries at **over 200,000 Operations per Second** (202 ops/ms) with **0 JVM Garbage Collection allocations**. Even rich hierarchical `RECURSIVE` chunking with Parent-Child context generation executes at **25,000 Operations per Second**.
+
+---
+
 ## Key Features
 
 - **⚡ SIMD-Accelerated Vector Boundary Scanning** — C++ SSE2 vector instructions for high-throughput text processing.
