@@ -76,7 +76,6 @@ Standard Java tokenization libraries often struggle with performance when proces
 * **🧠 Parent-Child Context Retention** — Links small `chunk.text` embeddings with large `chunk.parentText` contexts for zero context-loss LLM prompts.
 * **🚀 Zero-Allocation Native JNI** — Direct `chunkToOffsets` native API returning flat `int[]` offset pairs to eliminate JVM GC allocations.
 * **🎯 Intelligent Sentence Protection** — Prevents chunk splits inside abbreviations (`Dr.`, `med.`), decimals (`99.8%`), and quote blocks.
-* **🎨 FastANSI Overlap Visualizer** — Terminal debugging renderer highlighting overlap text in gray and core text in white.
 
 ---
 
@@ -101,11 +100,7 @@ ChunkBenchmark.benchmarkRecursiveChunking            thrpt    5   25.415 ± 10.3
 Converts unstructured binary documents (PDF, RTF, Markdown, TXT) into normalized UTF-8 text streams.
 
 **FastContentChunk (This Library — The Strategy Engine)**  
-Segments normalized text streams into contextual passages.
-- **`RECURSIVE`**: Hierarchical paragraph -> sentence -> SIMD token splitting with Parent-Child context.
-- **`PARAGRAPHS`**: Splits strictly on structural paragraph breaks (`\n\n`).
-- **`SENTENCES`**: Splits on sentence boundaries with abbreviation protection.
-- **`TOKENS`**: Fixed SIMD-accelerated token window.
+Segments normalized text streams into contextual passages with Parent-Child context.
 
 **[FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB) (The Vector Store)**  
 High-speed native C++ SIMD vector database storing small `chunk.text` embeddings for sub-5ms similarity retrieval.
