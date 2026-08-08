@@ -12,35 +12,37 @@ static void tokenize_indices(
 ) {
     tokenStarts.clear();
     tokenEnds.clear();
+    tokenStarts.reserve(len / 4 + 16);
+    tokenEnds.reserve(len / 4 + 16);
 
     bool inToken = false;
     int currentStart = 0;
 
     std::size_t i = 0;
-    const std::size_t step = 16; // SSE2-ish blocks
+    constexpr std::size_t step = 32; // AVX2 32-byte SIMD step
 
     while (i + step <= len) {
-        __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i*>(text + i));
+        __m256i chunk = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(text + i));
 
-        __m128i spaces  = _mm_set1_epi8(' ');
-        __m128i tabs    = _mm_set1_epi8('\t');
-        __m128i nl      = _mm_set1_epi8('\n');
-        __m128i cr      = _mm_set1_epi8('\r');
+        __m256i spaces = _mm256_set1_epi8(' ');
+        __m256i tabs   = _mm256_set1_epi8('\t');
+        __m256i nl     = _mm256_set1_epi8('\n');
+        __m256i cr     = _mm256_set1_epi8('\r');
 
-        __m128i eqSpace = _mm_cmpeq_epi8(chunk, spaces);
-        __m128i eqTab   = _mm_cmpeq_epi8(chunk, tabs);
-        __m128i eqNl    = _mm_cmpeq_epi8(chunk, nl);
-        __m128i eqCr    = _mm_cmpeq_epi8(chunk, cr);
+        __m256i eqSpace = _mm256_cmpeq_epi8(chunk, spaces);
+        __m256i eqTab   = _mm256_cmpeq_epi8(chunk, tabs);
+        __m256i eqNl    = _mm256_cmpeq_epi8(chunk, nl);
+        __m256i eqCr    = _mm256_cmpeq_epi8(chunk, cr);
 
-        __m128i wsMask  = _mm_or_si128(
-                            _mm_or_si128(eqSpace, eqTab),
-                            _mm_or_si128(eqNl, eqCr)
-                          );
+        __m256i wsMask = _mm256_or_si256(
+            _mm256_or_si256(eqSpace, eqTab),
+            _mm256_or_si256(eqNl, eqCr)
+        );
 
-        int mask = _mm_movemask_epi8(wsMask);
+        unsigned int mask = static_cast<unsigned int>(_mm256_movemask_epi8(wsMask));
 
-        for (int b = 0; b < 16; ++b) {
-            bool isWs = (mask & (1 << b)) != 0;
+        for (int b = 0; b < 32; ++b) {
+            bool isWs = (mask & (1u << b)) != 0;
             int pos = static_cast<int>(i + b);
 
             if (!isWs) {
@@ -56,10 +58,10 @@ static void tokenize_indices(
                 }
             }
         }
-
         i += step;
     }
 
+    // Remainder scalar pass for len < 32 or remaining trailing bytes
     while (i < len) {
         char c = text[i];
         bool isWs = (c == ' ' || c == '\t' || c == '\n' || c == '\r');
@@ -92,20 +94,27 @@ std::vector<Chunk> fastchunk_chunk(
     int maxTokens,
     int overlapTokens
 ) {
+    if (utf8Text == nullptr || len == 0 || maxTokens <= 0) {
+        return {};
+    }
+    if (overlapTokens < 0) overlapTokens = 0;
+    if (overlapTokens >= maxTokens) overlapTokens = maxTokens - 1;
+
     std::vector<int> starts;
     std::vector<int> ends;
     tokenize_indices(utf8Text, len, starts, ends);
 
+    const int tokenCount = static_cast<int>(starts.size());
+    if (tokenCount == 0) return {};
+
     std::vector<Chunk> chunks;
-    chunks.reserve(std::max<size_t>(1, starts.size() / (maxTokens > 0 ? maxTokens : 1)));
+    chunks.reserve(static_cast<size_t>(std::max(1, tokenCount / maxTokens + 1)));
 
     int id = 0;
-    int tokenCount = static_cast<int>(starts.size());
     int startIdx = 0;
 
     while (startIdx < tokenCount) {
-        int endIdx = startIdx + maxTokens;
-        if (endIdx > tokenCount) endIdx = tokenCount;
+        int endIdx = std::min(startIdx + maxTokens, tokenCount);
 
         int byteStart = starts[startIdx];
         int byteEnd   = ends[endIdx - 1];
@@ -116,8 +125,7 @@ std::vector<Chunk> fastchunk_chunk(
         chunks.push_back(std::move(c));
 
         if (endIdx == tokenCount) break;
-        startIdx = endIdx - overlapTokens;
-        if (startIdx < 0) startIdx = 0;
+        startIdx = std::max(0, endIdx - overlapTokens);
     }
 
     return chunks;

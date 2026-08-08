@@ -34,6 +34,8 @@ public final class FastContentChunkNative {
     private FastContentChunkNative() {}
 
     public static native Chunk[] chunk(String text, int maxTokens, int overlapTokens);
+    
+    public static native int[] chunkToOffsets(String text, int maxTokens, int overlapTokens);
 
     // Java fallback implementation
     public static Chunk[] chunkJava(String text, int maxTokens, int overlapTokens) {
