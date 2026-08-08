@@ -180,7 +180,7 @@ dependencies {
 
 Download the required JARs directly to add them to your classpath:
 
-1. ✂️ **[FastContentChunk-0.1.1.jar](https://github.com/andrestubbe/FastContentChunk/releases/download/0.1.1/FastContentChunk-0.1.1.jar)** (The Core Library)
+1. ✂️ **[FastContentChunk-0.1.2.jar](https://github.com/andrestubbe/FastContentChunk/releases/download/0.1.2/FastContentChunk-0.1.2.jar)** (The Core Library)
 2. 📄 **[FastContentParse-0.1.0.jar](https://github.com/andrestubbe/FastContentParse/releases/download/0.1.0/FastContentParse-0.1.0.jar)** (Content Parser)
 3. ⚙️ **[fastcore-0.1.0.jar](https://github.com/andrestubbe/FastCore/releases/download/0.1.0/fastcore-0.1.0.jar)** (Mandatory Native Loader)
 
