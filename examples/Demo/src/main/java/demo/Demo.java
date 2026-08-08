@@ -7,6 +7,7 @@ import fastcontentchunk.ChunkMode;
 import fastcontentchunk.FastContentChunk;
 import fastcontentparse.FastContentParse;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class Demo {
@@ -17,7 +18,7 @@ public class Demo {
         Path readmePath = Path.of("..", "..", "README.md");
         System.out.println("Reading Markdown text from: " + readmePath.toAbsolutePath());
 
-        String markdownText = java.nio.file.Files.readString(readmePath);
+        String markdownText = Files.readString(readmePath);
 
         System.out.println("Total extracted README length: " + markdownText.length() + " characters\n");
 
@@ -51,7 +52,6 @@ public class Demo {
                 System.out.print(FastANSI.FG_BRIGHT_BLACK + "[OVERLAP: " + chunk.overlapText + "] " + FastANSI.RESET);
             }
 
-            // Print main text in bright white
             String mainText = chunk.text;
             if (!chunk.overlapText.isEmpty() && mainText.startsWith(chunk.overlapText)) {
                 mainText = mainText.substring(chunk.overlapText.length()).trim();
