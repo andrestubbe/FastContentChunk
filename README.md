@@ -117,9 +117,6 @@ Higher-level RAG framework that orchestrates **[FastContentParse](https://github
 | `chunk(String)` | Chunks text using default `RECURSIVE` configuration. | [Reference →](docs/REFERENCE.md#chunk) |
 | `chunk(String, ChunkConfig)` | Chunks text using custom strategy config. | [Reference →](docs/REFERENCE.md#chunkconfig) |
 
-> [!TIP]
-> See **[REFERENCE.md](docs/REFERENCE.md)** for full API contracts.
-
 ---
 
 ## Installation
@@ -213,13 +210,13 @@ MIT License — See [LICENSE](LICENSE) file for details.
 
 ## Related Projects
 
-- [FastContentParse](https://github.com/andrestubbe/FastContentParse) — Java content parser for text extraction and normalization
-- [FastAIRag](https://github.com/andrestubbe/FastAIRag) — Retrieval-Augmented Generation pipeline
-- [FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB) — High-speed vector store backed by native C++ SIMD engine
+- [FastContentParse](https://github.com/andrestubbe/FastContentParse) — Standardized Java document parser for text extraction and normalization
+- [FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB) — High-speed native C++ SIMD vector database
+- [FastAIRag](https://github.com/andrestubbe/FastAIRag) — Retrieval-Augmented Generation pipeline client
 - [FastCore](https://github.com/andrestubbe/FastCore) — Native JNI loader for FastJava libraries
+- [FastAI](https://github.com/andrestubbe/fastai) — Unified lightweight AI model client interface
+- [FastAIModel](https://github.com/andrestubbe/FastAIModel) — Embedded ONNX runtime for local feature embeddings
+- [FastAIBot](https://github.com/andrestubbe/FastAIBot) — Autonomous conversational AI bot engine
+- [FastAIAgent](https://github.com/andrestubbe/FastAIAgent) — Autonomous agentic workflow execution framework
 
----
-
-## Part of the FastJava Ecosystem
-
-*Making the JVM faster. Small package. Maximum speed. Zero bloat. 🚀📋*
+Part of the FastJava Ecosystem — Making the JVM faster. Small package. Maximum speed. Zero bloat. 🚀📋
