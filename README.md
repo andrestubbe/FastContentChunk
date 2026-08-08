@@ -69,6 +69,17 @@ Standard Java tokenization libraries often struggle with performance when proces
 
 ---
 
+## Key Features
+
+* **⚡ Native AVX2 SIMD Tokenizer** — Uses 32-byte C++ AVX2 vector instructions (`_mm256_cmpeq_epi8`) for sub-microsecond whitespace token scanning.
+* **✂️ Hierarchical Multi-Mode Strategy Engine** — Supports `RECURSIVE`, `PARAGRAPHS`, `SENTENCES`, and `TOKENS` strategies.
+* **🧠 Parent-Child Context Retention** — Links small `chunk.text` embeddings with large `chunk.parentText` contexts for zero context-loss LLM prompts.
+* **🚀 Zero-Allocation Native JNI** — Direct `chunkToOffsets` native API returning flat `int[]` offset pairs to eliminate JVM GC allocations.
+* **🎯 Intelligent Sentence Protection** — Prevents chunk splits inside abbreviations (`Dr.`, `med.`), decimals (`99.8%`), and quote blocks.
+* **🎨 FastANSI Overlap Visualizer** — Terminal debugging renderer highlighting overlap text in gray and core text in white.
+
+---
+
 ## Performance Benchmarks
 
 `FastContentChunk` is designed for ultra-low latency tokenization and passage chunking. In the official [JMH Benchmark](examples/Benchmark), the system measured throughput across chunking modes:
@@ -81,16 +92,6 @@ ChunkBenchmark.benchmarkRecursiveChunking            thrpt    5   25.415 ± 10.3
 ```
 
 > **202,000 Operations per Second (Zero-Allocation)**: With the native AVX2 SIMD `chunkToOffsets` JNI engine, `FastContentChunk` processes document token boundaries at **over 200,000 Operations per Second** (202 ops/ms) with **0 JVM Garbage Collection allocations**. Even rich hierarchical `RECURSIVE` chunking with Parent-Child context generation executes at **25,000 Operations per Second**.
-
----
-
-## Key Features
-
-- **⚡ SIMD-Accelerated Vector Boundary Scanning** — C++ SSE2 vector instructions for high-throughput text processing.
-- **🧠 Parent-Child Context Retention** — Retains overarching section context to eliminate LLM hallucinations.
-- **🎯 Intelligent Sentence Protection** — Prevents chunk splits inside abbreviations, decimals, and quote blocks.
-- **🎨 FastANSI Visual Overlap Visualizer** — Terminal debugging renderer highlighting overlaps in gray and new text in white.
-- **⚙️ FastCore Integration** — Automatic native `.dll` extraction and loading out-of-the-box.
 
 ---
 
