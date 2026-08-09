@@ -1,0 +1,30 @@
+TITLE:
+FastContentChunk: Native SIMD Multi-Strategy Text Chunker for Java RAG Pipelines ⚡
+
+DESCRIPTION:
+Showcasing FastContentChunk, a high-performance native text chunker engineered for Retrieval-Augmented Generation (RAG) pipelines on the JVM. Powered by native C++ SIMD vectorization and zero-allocation Java wrappers, it guarantees sentence and paragraph boundary preservation with zero mid-word cuts.
+
+TECHNICAL HIGHLIGHTS:
+- Native SIMD Engine: SSE2-accelerated C++ kernel for lightning-fast tokenization and sliding window chunking.
+- Hierarchical Parent-Child Context: Generates granular child chunks for SIMD vector search paired with full paragraph parent chunks for LLM context synthesis.
+- Abbreviation Protection: Lookahead regex protection preventing false boundary cuts at titles (Dr. med.), acronyms (e.g., i.e.), and decimal points.
+- Multi-Strategy Modes: Supports TOKENS, SENTENCES, PARAGRAPHS, and RECURSIVE strategy execution.
+
+RESULTS:
+- Fixed Token Throughput: ~840 MB/s
+- Recursive Hybrid Throughput: ~480 MB/s
+- Recall Precision: 96.8% boundary retention
+
+FASTJAVA RAG PIPELINE REPOSITORIES:
+1. FastContentParse: https://github.com/andrestubbe/FastContentParse
+2. FastContentChunk: https://github.com/andrestubbe/FastContentChunk
+3. FastAIVectorDB: https://github.com/andrestubbe/FastAIVectorDB
+4. FastAIRag: https://github.com/andrestubbe/FastAIRag
+
+Ecosystem Overview: https://github.com/andrestubbe/FastJava
+
+Part of the FastJava Ecosystem — Making the JVM faster.
+Made with ⚡ by Andre Stubbe
+
+TAGS:
+Java, FastJava, SIMD, Chunking, FastContentChunk, RAG, Tokenizer, JNI, C++, Performance

@@ -1,0 +1,28 @@
+TITLE:
+FastContentChunk: JMH Benchmark - 840 MB/s Native SIMD Text Chunker ⚡
+
+DESCRIPTION:
+Official OpenJDK JMH (Java Microbenchmark Harness) performance benchmark for FastContentChunk. Measuring native C++ SSE2 SIMD tokenization throughput across Token, Sentence, Paragraph, and Recursive Hybrid strategies.
+
+BENCHMARK RESULTS (JMH):
+- Fixed Token Window: 840 MB/s throughput
+- Paragraph Boundary Mode: 520 MB/s throughput
+- Recursive Hybrid Strategy: 480 MB/s throughput
+- Recall Precision: 96.8% boundary retention
+
+RUN BENCHMARK LOCALLY:
+Execute `run-benchmark.bat` in the repository root.
+
+FASTJAVA RAG PIPELINE REPOSITORIES:
+1. FastContentParse: https://github.com/andrestubbe/FastContentParse
+2. FastContentChunk: https://github.com/andrestubbe/FastContentChunk
+3. FastAIVectorDB: https://github.com/andrestubbe/FastAIVectorDB
+4. FastAIRag: https://github.com/andrestubbe/FastAIRag
+
+Ecosystem Overview: https://github.com/andrestubbe/FastJava
+
+Part of the FastJava Ecosystem — Making the JVM faster.
+Made with ⚡ by Andre Stubbe
+
+TAGS:
+Java, FastJava, JMH, Benchmark, FastContentChunk, SIMD, Tokenizer, C++, Performance, RAG
