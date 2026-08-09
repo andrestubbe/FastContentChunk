@@ -12,7 +12,7 @@
 
 `FastContentChunk` provides a SIMD-accelerated native tokenizer and hierarchical multi-mode chunking engine for Java. It is designed to work alongside **[FastContentParse](https://github.com/andrestubbe/FastContentParse)**, **[FastAIVectorDB](https://github.com/andrestubbe/FastAIVectorDB)**, and **[FastAIRag](https://github.com/andrestubbe/FastAIRag)** to accelerate text segmenting and Parent-Child context retention.
 
-[![Showcase](docs/screenshot.png)](https://youtu.be/4dDMeUfrQ3w)
+[![Showcase](docs/screenshot.png)](https://youtu.be/WraHz6LHKSU)
 
 ---
 
