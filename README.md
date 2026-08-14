@@ -26,9 +26,7 @@ import fastcontentchunk.Chunk;
 
 public class Demo {
     public static void main(String[] args) {
-        String text = "Paragraph 1...
-
-Paragraph 2 with extended details...";
+        String text = "Paragraph 1...\n\nParagraph 2 with extended details...";
 
         // 1. Initialize Chunker & Strategy Config
         FastContentChunk chunker = new FastContentChunk();
@@ -39,10 +37,8 @@ Paragraph 2 with extended details...";
 
         // 3. Inspect Results (Small Chunk for Vector Search, Parent Text for Prompt)
         for (Chunk chunk : chunks) {
-            System.out.printf("Chunk #%d [%d tokens]: %s
-", chunk.id, chunk.tokenCount, chunk.text);
-            System.out.printf("  ↳ Parent Context (%d chars)
-", chunk.parentText.length());
+            System.out.printf("Chunk #%d [%d tokens]: %s\n", chunk.id, chunk.tokenCount, chunk.text);
+            System.out.printf("  ↳ Parent Context (%d chars)\n", chunk.parentText.length());
         }
     }
 }
