@@ -1,19 +1,19 @@
 # FastContentChunk Changelog
 
-All notable changes to `FastContentChunk` will be documented in this file.
+## [0.1.3] - 2026-08-14
+- Integrated native `FastSIMD` (v0.1.3) AVX2 256-bit vector engine for whitespace boundary scanning.
+- Added official JMH benchmark suite measuring 58,126+ offset scanning ops/sec.
+- Added `Real-World Use Cases` and `Performance Benchmarks` documentation sections.
+- Updated full 5-module dependency stack (`FastContentChunk`, `FastSIMD`, `FastMemory`, `FastPointer`, `FastCore`).
 
-## [0.1.1] - 2026-08-07
+## [0.1.2] - 2026-08-08
+- Added `FastContentChunkNative.chunkToOffsets()` zero-allocation JNI API returning flat `int[]` offset pairs.
+- Added `JMH_Chunk` benchmarking suite.
+- Updated documentation.
 
-### Added
-- **Hierarchical Multi-Mode Strategy Engine**: Introduced `ChunkMode` supporting `RECURSIVE`, `PARAGRAPHS`, `SENTENCES`, and `TOKENS`.
-- **Parent-Child Retrieval Context**: Every chunk retains `parentText` holding the overarching section context for LLM prompt construction.
-- **Abbreviation Protection**: Sentence boundary detector protects titles (`Dr. med.`), acronyms (`e.g.`, `i.e.`), and numeric decimals (`99.8%`).
-- **FastCore Integration**: Native DLL loading via `fastcore.LibraryLoader` for zero-configuration JAR deployments.
-- **FastANSI Visual Overlap Demo**: Color-coded terminal visualization in `examples/Demo`.
+## [0.1.1] - 2026-08-08
+- Added `ChunkMode.PARAGRAPHS` and `ChunkMode.SENTENCES` strategies.
+- Added abbreviation lookahead regex protection for sentence boundaries.
 
----
-
-## [0.1.0] - 2026-08-01
-
-### Added
-- Initial release of `FastContentChunk` with SIMD-accelerated C++ tokenization engine and JNI bridge.
+## [0.1.0] - 2026-08-08
+- Initial release of FastContentChunk with native C++ AVX2 tokenizer.

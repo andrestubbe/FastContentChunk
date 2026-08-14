@@ -1,3 +1,4 @@
+/* Accelerated by FastSIMD AVX2 Hardware Engine */
 #include "fastchunk.h"
 #include <immintrin.h>
 #include <cstring>
