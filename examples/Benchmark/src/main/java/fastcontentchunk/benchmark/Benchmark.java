@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Warmup(iterations = 1, time = 1)
 @Measurement(iterations = 2, time = 1)
 @Fork(1)
-public class JMH_Chunk {
+public class Benchmark {
 
     private FastContentChunk chunker;
     private ChunkConfig recursiveConfig;

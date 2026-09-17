@@ -54,6 +54,7 @@ public class Demo {
 - [Performance Benchmarks](#performance-benchmarks)
 - [Architecture Overview](#architecture-overview)
 - [API Quick Reference](#api-quick-reference)
+- [Technical Demos & Benchmarks](#technical-demos--benchmarks)
 - [Installation](#installation)
 - [Documentation](#documentation)
 - [Platform Support](#platform-support)
@@ -105,8 +106,8 @@ Standard Java tokenization libraries often struggle with performance when proces
 
 ```text
 Benchmark                             Mode  Cnt      Score   Error  Units
-JMH_Chunk.benchmarkNativeAVX2Offsets thrpt    2  58126.877          ops/s
-JMH_Chunk.benchmarkRecursiveChunking thrpt    2   6179.519          ops/s
+Benchmark.benchmarkNativeAVX2Offsets  thrpt    2  58126.877          ops/s
+Benchmark.benchmarkRecursiveChunking  thrpt    2   6179.519          ops/s
 ```
 
 > **58,000+ Operations per Second (Zero-Allocation)**: With the native AVX2 SIMD `chunkToOffsets` JNI engine, `FastContentChunk` processes document token boundaries at **over 58,000 Operations per Second** (58 ops/ms) with **0 JVM Garbage Collection allocations**. Even rich hierarchical `RECURSIVE` chunking with Parent-Child context generation executes at **6,100+ Operations per Second**.
@@ -135,6 +136,15 @@ Higher-level RAG framework that orchestrates **[FastContentParse](https://github
 |--------|-------------|------|
 | `chunk(String)` | Chunks text using default `RECURSIVE` configuration. | [Reference 📖](docs/REFERENCE.md#chunk) |
 | `chunk(String, ChunkConfig)` | Chunks text using custom strategy config. | [Reference 📖](docs/REFERENCE.md#chunkconfig) |
+
+---
+
+## Technical Demos & Benchmarks
+
+| Case | Java Example | Launcher | Description |
+|:---|:---|:---|:---|
+| **Interactive Showcase Demo** | [Demo.java](examples/Demo/src/main/java/demo/Demo.java) | `run-demo.bat` | End-to-end interactive demonstration of AVX2 text chunking strategies and parent-document retrieval. |
+| **JMH Microbenchmark Suite** | [Benchmark.java](examples/Benchmark/src/main/java/fastcontentchunk/benchmark/Benchmark.java) | `run-benchmark.bat` | Formal OpenJDK JMH throughput measurements across native chunking algorithms. |
 
 ---
 
