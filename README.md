@@ -71,6 +71,13 @@ Standard Java tokenization libraries often struggle with performance when proces
 - **Parent-Child Retrieval** — Attaches full section context (`parentText`) to every chunk for zero context-loss LLM prompts.
 - **Abbreviation Protection** — Intelligent lookahead regex preventing false sentence breaks on titles (`Dr. med.`) and acronyms (`e.g.`, `99.8%`).
 
+| Feature | LangChain4j Chunker | Java Regex / BreakIterator | FastContentChunk |
+|:---|:---|:---|:---|
+| **Boundary Scanning** | Scalar Java loops / regex | Scalar `BreakIterator` | **AVX2 SIMD vector scan (32 bytes/cycle)**|
+| **Parent-Child Retention**| Manual extra step / wrapper | Not supported | **Native 1st-class Parent-Child linking**|
+| **Abbreviation Guard** | Blind period splits / naive | Naive sentence rules | **Zero false-split lookahead protection**|
+| **Heap / GC Overhead** | High (substring / list churn)| Moderate String copying | **Zero GC `int[]` offset pairs** |
+
 ---
 
 ## Key Features
