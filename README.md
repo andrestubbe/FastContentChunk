@@ -134,14 +134,14 @@ Higher-level RAG framework that orchestrates **[FastContentParse](https://github
 
 | Method | Description | Path |
 |--------|-------------|------|
-| `chunk(String)` | Chunks text using default `HIERARCHICAL` configuration. | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunk(String, ChunkConfig)` | Chunks text using custom strategy config. | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunkByParagraph(String)` | Strict atomic paragraph splitting (splits at `\n\n`, ideal for TTS). | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunkBySentence(String)` | Strict atomic sentence splitting (splits at sentence boundaries, ideal for streaming TTS). | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunkByTokenWindow(String, ChunkConfig)` | Hardware-accelerated sliding token windows (AVX2 SIMD). | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunkByParagraphWindow(String, ChunkConfig)` | Bundles whole paragraphs into a single chunk up to `maxTokens`. | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunkBySentenceWindow(String, ChunkConfig)` | Bundles whole sentences into a single chunk up to `maxTokens`. | [Reference 📖](docs/REFERENCE.md#methods) |
-| `chunkHierarchical(String, ChunkConfig)` | Multi-level chunking: Paragraphs -> Sentences -> SIMD Token fallback. | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunk(String)` | Chunks text using default `HIERARCHICAL` configuration. | [Reference](docs/REFERENCE.md#methods) |
+| `chunk(String, ChunkConfig)` | Chunks text using custom strategy config. | [Reference](docs/REFERENCE.md#methods) |
+| `chunkByParagraph(String)` | Strict atomic paragraph splitting (splits at `\n\n`, ideal for TTS). | [Reference](docs/REFERENCE.md#methods) |
+| `chunkBySentence(String)` | Strict atomic sentence splitting (splits at sentence boundaries, ideal for streaming TTS). | [Reference](docs/REFERENCE.md#methods) |
+| `chunkByTokenWindow(String, ChunkConfig)` | Hardware-accelerated sliding token windows (AVX2 SIMD). | [Reference](docs/REFERENCE.md#methods) |
+| `chunkByParagraphWindow(String, ChunkConfig)` | Bundles whole paragraphs into a single chunk up to `maxTokens`. | [Reference](docs/REFERENCE.md#methods) |
+| `chunkBySentenceWindow(String, ChunkConfig)` | Bundles whole sentences into a single chunk up to `maxTokens`. | [Reference](docs/REFERENCE.md#methods) |
+| `chunkHierarchical(String, ChunkConfig)` | Multi-level chunking: Paragraphs -> Sentences -> SIMD Token fallback. | [Reference](docs/REFERENCE.md#methods) |
 
 ---
 
