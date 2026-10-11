@@ -249,11 +249,11 @@ Download the required JARs directly to add them to your classpath:
 
 ## Platform Support
 
-| Platform | Status |
-|----------|--------|
-| Windows 10/11 (x64) | ✅ Fully Supported |
-| Linux | 🔄 Planned |
-| macOS | 🔄 Planned |
+| Platform | Architecture | Status | Notes |
+|:---|:---:|:---:|:---|
+| **Windows 10 / 11** | x64 | ✅ Fully Supported | Native C++ MSVC AVX2 SIMD acceleration (`fastchunk.dll`) |
+| **Linux (Ubuntu / RHEL)** | x64 / AArch64 | 🚧 Planned | Seamless pure Java fallback; GCC AVX2 / NEON build in progress |
+| **macOS (Sonoma+)** | Apple Silicon / x64 | 🚧 Planned | Seamless pure Java fallback; Clang ARM NEON vector engine planned |
 
 ---
 
