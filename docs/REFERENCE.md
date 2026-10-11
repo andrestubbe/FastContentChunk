@@ -9,10 +9,28 @@ High-level strategy engine and public API entry point.
 
 #### Methods
 - `public Chunk[] chunk(String text)`  
-  Chunks text using default configuration (`maxTokens = 512`, `overlapTokens = 64`, `mode = ChunkMode.RECURSIVE`).
+  Chunks text using default configuration (`maxTokens = 512`, `overlapTokens = 64`, `mode = ChunkMode.HIERARCHICAL`).
 
 - `public Chunk[] chunk(String text, ChunkConfig config)`  
-  Chunks text using custom strategy configuration.
+  Chunks text using the strategy specified in `ChunkConfig`.
+
+- `public Chunk[] chunkByParagraph(String text)`  
+  Segments text strictly at double-newline paragraph boundaries (atomic single-paragraph, ideal for TTS).
+
+- `public Chunk[] chunkBySentence(String text)`  
+  Segments text strictly at sentence delimiters (`.`, `!`, `?` followed by whitespace, ideal for streaming TTS).
+
+- `public Chunk[] chunkByTokenWindow(String text, ChunkConfig config)`  
+  Hardware-accelerated sliding token windows (AVX2 SIMD) with strict maxTokens budget and optional overlap.
+
+- `public Chunk[] chunkByParagraphWindow(String text, ChunkConfig config)`  
+  Bundles multiple whole paragraphs into a single chunk up to `maxTokens`.
+
+- `public Chunk[] chunkBySentenceWindow(String text, ChunkConfig config)`  
+  Bundles multiple whole sentences into a single chunk up to `maxTokens`.
+
+- `public Chunk[] chunkHierarchical(String text, ChunkConfig config)`  
+  Hierarchical multi-level chunking: Paragraphs -> Sentences -> SIMD Token fallback.
 
 ---
 
@@ -21,10 +39,10 @@ Configuration model for chunking behavior.
 
 #### Constructors
 - `public ChunkConfig()`  
-  Defaults: `maxTokens = 512`, `overlapTokens = 64`, `mode = ChunkMode.RECURSIVE`.
+  Defaults: `maxTokens = 512`, `overlapTokens = 64`, `mode = ChunkMode.HIERARCHICAL`.
 
 - `public ChunkConfig(int maxTokens, int overlapTokens)`  
-  Defaults mode to `ChunkMode.RECURSIVE`.
+  Defaults mode to `ChunkMode.HIERARCHICAL`.
 
 - `public ChunkConfig(int maxTokens, int overlapTokens, ChunkMode mode)`  
   Full parameter constructor.
@@ -33,10 +51,12 @@ Configuration model for chunking behavior.
 
 ### `ChunkMode`
 Enum strategy types:
-- `RECURSIVE`: Hierarchical splitting (Paragraphs -> Sentences -> SIMD Tokens) with Parent-Child context preservation.
-- `PARAGRAPHS`: Splits strictly on structural paragraph boundaries (`\n\n`).
-- `SENTENCES`: Splits on sentence boundaries while preserving titles, acronyms, and decimal points.
-- `TOKENS`: Fixed SIMD-accelerated token window splitting.
+- `PARAGRAPH`: Strict atomic single-paragraph chunking (splits cleanly at `\r?\n\r?\n+`, no bundling, ideal for TTS).
+- `SENTENCE`: Strict atomic single-sentence chunking (splits cleanly at sentence delimiters, no bundling, ideal for streaming TTS).
+- `TOKEN_WINDOW`: Hardware-accelerated sliding token windows (AVX2 SIMD) with strict token budget.
+- `PARAGRAPH_WINDOW`: Bundles whole paragraphs into a single chunk up to `maxTokens`.
+- `SENTENCE_WINDOW`: Bundles whole sentences into a single chunk up to `maxTokens`.
+- `HIERARCHICAL`: Multi-level chunking: Paragraphs -> Sentences -> SIMD Token fallback (recommended default).
 
 ---
 

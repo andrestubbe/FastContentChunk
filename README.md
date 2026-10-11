@@ -1,10 +1,10 @@
-# FastContentChunk 0.1.3 [ALPHA-2026-08] — High-Performance Tokenizer and Strategy Engine for Java
+# FastContentChunk 0.1.4 [ALPHA-2026-10] — High-Performance Tokenizer and Strategy Engine for Java
 
-[![Status](https://img.shields.io/badge/status-0.1.3-brightgreen.svg)](https://github.com/andrestubbe/FastContentChunk/releases/tag/0.1.3)
+[![Status](https://img.shields.io/badge/status-0.1.4-brightgreen.svg)](https://github.com/andrestubbe/FastContentChunk/releases/tag/0.1.4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.java.com)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010+-lightgrey.svg)]()
-[![JitPack](https://img.shields.io/badge/JitPack-0.1.3-green.svg)](https://jitpack.io/#andrestubbe/FastContentChunk)
+[![JitPack](https://img.shields.io/badge/JitPack-0.1.4-green.svg)](https://jitpack.io/#andrestubbe/FastContentChunk)
 
 ---
 
@@ -30,7 +30,7 @@ public class Demo {
 
         // 1. Initialize Chunker & Strategy Config
         FastContentChunk chunker = new FastContentChunk();
-        ChunkConfig config = new ChunkConfig(512, 64, ChunkMode.RECURSIVE);
+        ChunkConfig config = new ChunkConfig(512, 64, ChunkMode.HIERARCHICAL);
 
         // 2. Execute Chunking
         Chunk[] chunks = chunker.chunk(text, config);
@@ -68,7 +68,7 @@ public class Demo {
 Standard Java tokenization libraries often struggle with performance when processing large multi-page documents, destroying sentence structure and causing LLM hallucinations. `FastContentChunk` addresses this by:
 
 - **SIMD Acceleration** — Uses native C++ AVX2 vector instructions for ultra-fast boundary scanning.
-- **Hierarchical Multi-Mode Strategies** — Supports `RECURSIVE`, `PARAGRAPHS`, `SENTENCES`, and `TOKENS` modes.
+- **Hierarchical Multi-Mode Strategies** — Supports `PARAGRAPH`, `SENTENCE`, `TOKEN_WINDOW`, `PARAGRAPH_WINDOW`, `SENTENCE_WINDOW`, and `HIERARCHICAL` modes.
 - **Parent-Child Retrieval** — Attaches full section context (`parentText`) to every chunk for zero context-loss LLM prompts.
 - **Abbreviation Protection** — Intelligent lookahead regex preventing false sentence breaks on titles (`Dr. med.`) and acronyms (`e.g.`, `99.8%`).
 
@@ -84,7 +84,7 @@ Standard Java tokenization libraries often struggle with performance when proces
 ## Key Features
 
 * **⚡ Native AVX2 SIMD Tokenizer** — Uses 32-byte C++ AVX2 vector instructions (`_mm256_cmpeq_epi8`) for sub-microsecond whitespace token scanning.
-* **🧩 Hierarchical Multi-Mode Strategy Engine** — Supports `RECURSIVE`, `PARAGRAPHS`, `SENTENCES`, and `TOKENS` strategies.
+* **🧩 Hierarchical Multi-Mode Strategy Engine** — Supports `PARAGRAPH`, `SENTENCE`, `TOKEN_WINDOW`, `PARAGRAPH_WINDOW`, `SENTENCE_WINDOW`, and `HIERARCHICAL` strategies.
 * **🧠 Parent-Child Context Retention** — Links small `chunk.text` embeddings with large `chunk.parentText` contexts for zero context-loss LLM prompts.
 * **⚡ Zero-Allocation Native JNI** — Direct `chunkToOffsets` native API returning flat `int[]` offset pairs to eliminate JVM GC allocations.
 * **🛡️ Intelligent Sentence Protection** — Prevents chunk splits inside abbreviations (`Dr.`, `med.`), decimals (`99.8%`), and quote blocks.
@@ -134,8 +134,14 @@ Higher-level RAG framework that orchestrates **[FastContentParse](https://github
 
 | Method | Description | Path |
 |--------|-------------|------|
-| `chunk(String)` | Chunks text using default `RECURSIVE` configuration. | [Reference 📖](docs/REFERENCE.md#chunk) |
-| `chunk(String, ChunkConfig)` | Chunks text using custom strategy config. | [Reference 📖](docs/REFERENCE.md#chunkconfig) |
+| `chunk(String)` | Chunks text using default `HIERARCHICAL` configuration. | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunk(String, ChunkConfig)` | Chunks text using custom strategy config. | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunkByParagraph(String)` | Strict atomic paragraph splitting (splits at `\n\n`, ideal for TTS). | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunkBySentence(String)` | Strict atomic sentence splitting (splits at sentence boundaries, ideal for streaming TTS). | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunkByTokenWindow(String, ChunkConfig)` | Hardware-accelerated sliding token windows (AVX2 SIMD). | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunkByParagraphWindow(String, ChunkConfig)` | Bundles whole paragraphs into a single chunk up to `maxTokens`. | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunkBySentenceWindow(String, ChunkConfig)` | Bundles whole sentences into a single chunk up to `maxTokens`. | [Reference 📖](docs/REFERENCE.md#methods) |
+| `chunkHierarchical(String, ChunkConfig)` | Multi-level chunking: Paragraphs -> Sentences -> SIMD Token fallback. | [Reference 📖](docs/REFERENCE.md#methods) |
 
 ---
 
@@ -167,7 +173,7 @@ Add the JitPack repository and the complete dependency stack to your `pom.xml`:
     <dependency>
         <groupId>com.github.andrestubbe</groupId>
         <artifactId>FastContentChunk</artifactId>
-        <version>0.1.3</version>
+        <version>0.1.4</version>
     </dependency>
 
     <!-- FastSIMD Hardware Vector Acceleration Engine -->
@@ -208,7 +214,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.andrestubbe:FastContentChunk:0.1.3'
+    implementation 'com.github.andrestubbe:FastContentChunk:0.1.4'
     implementation 'com.github.andrestubbe:FastSIMD:0.1.3'
     implementation 'com.github.andrestubbe:FastMemory:0.1.1'
     implementation 'com.github.andrestubbe:FastPointer:0.1.1'
@@ -220,7 +226,7 @@ dependencies {
 
 Download the required JARs directly to add them to your classpath:
 
-1. ⚡ **[FastContentChunk-0.1.3.jar](https://github.com/andrestubbe/FastContentChunk/releases/download/0.1.3/FastContentChunk-0.1.3.jar)** (The Core Library)
+1. ⚡ **[FastContentChunk-0.1.4.jar](https://github.com/andrestubbe/FastContentChunk/releases/download/0.1.4/FastContentChunk-0.1.4.jar)** (The Core Library)
 2. 🚀 **[FastSIMD-0.1.3.jar](https://github.com/andrestubbe/FastSIMD/releases/download/0.1.3/FastSIMD-0.1.3.jar)** (Hardware Vector Acceleration Engine)
 3. 💾 **[FastMemory-0.1.1.jar](https://github.com/andrestubbe/FastMemory/releases/download/0.1.1/FastMemory-0.1.1.jar)** (32-Byte Aligned Allocator)
 4. 📍 **[FastPointer-0.1.1.jar](https://github.com/andrestubbe/FastPointer/releases/download/0.1.1/FastPointer-0.1.1.jar)** (Primitive Address Pointer)

@@ -4,14 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * High-performance text chunking engine for RAG pipelines, LLM prompt engineering, and speech synthesis.
+ * Supports strict boundary modes (Paragraph, Sentence) alongside AVX2-accelerated sliding token windows.
+ */
 public final class FastContentChunk {
 
     private static final Pattern SENTENCE_PATTERN = Pattern.compile("(?<=[.!?])\\s+");
 
+    /**
+     * Default constructor creating a standard chunking engine instance.
+     */
+    public FastContentChunk() {}
+
+    /**
+     * Chunks the given text using default {@link ChunkConfig} settings ({@link ChunkMode#HIERARCHICAL}).
+     *
+     * @param text The input text to segment
+     * @return Array of segmented {@link Chunk} objects
+     */
     public Chunk[] chunk(String text) {
         return chunk(text, new ChunkConfig());
     }
 
+    /**
+     * Chunks the given text according to the specified {@link ChunkConfig} strategy.
+     *
+     * @param text   The input text to segment
+     * @param config The chunking parameters and mode
+     * @return Array of segmented {@link Chunk} objects
+     */
     public Chunk[] chunk(String text, ChunkConfig config) {
         if (text == null || text.trim().isEmpty()) {
             return new Chunk[0];
@@ -20,23 +42,119 @@ public final class FastContentChunk {
         ChunkConfig cfg = config != null ? config : new ChunkConfig();
 
         switch (cfg.getMode()) {
-            case TOKENS:
-                return chunkTokens(text, cfg);
-            case SENTENCES:
-                return chunkSentences(text, cfg);
-            case PARAGRAPHS:
-                return chunkParagraphs(text, cfg);
-            case RECURSIVE:
+            case PARAGRAPH:
+                return chunkByParagraph(text);
+            case SENTENCE:
+                return chunkBySentence(text);
+            case TOKEN_WINDOW:
+                return chunkByTokenWindow(text, cfg);
+            case PARAGRAPH_WINDOW:
+                return chunkByParagraphWindow(text, cfg);
+            case SENTENCE_WINDOW:
+                return chunkBySentenceWindow(text, cfg);
+            case HIERARCHICAL:
             default:
-                return chunkRecursive(text, cfg);
+                return chunkHierarchical(text, cfg);
         }
     }
 
-    private Chunk[] chunkTokens(String text, ChunkConfig config) {
-        return FastContentChunkNative.chunkSafe(text, config.getMaxTokens(), config.getOverlapTokens());
+    /**
+     * Segments text strictly at double-newline paragraph boundaries ({@code \r?\n\r?\n+}).
+     * Does not combine or pack paragraphs, making it ideal for TTS paragraph synthesis.
+     *
+     * @param text The input text to segment
+     * @return Array of paragraph {@link Chunk} objects
+     */
+    public Chunk[] chunkByParagraph(String text) {
+        if (text == null || text.trim().isEmpty()) return new Chunk[0];
+        String[] raw = text.split("(\\r?\\n){2,}");
+        List<Chunk> result = new ArrayList<>();
+        int id = 0;
+        int searchFrom = 0;
+
+        for (String p : raw) {
+            String trimmed = p.trim();
+            if (trimmed.isEmpty()) continue;
+
+            int start = text.indexOf(trimmed, searchFrom);
+            if (start < 0) start = searchFrom;
+            int end = start + trimmed.length();
+            searchFrom = end;
+
+            result.add(new Chunk(
+                    id++,
+                    trimmed,
+                    "",
+                    trimmed,
+                    start,
+                    end,
+                    countTokens(trimmed)
+            ));
+        }
+        return result.toArray(new Chunk[0]);
     }
 
-    private Chunk[] chunkParagraphs(String text, ChunkConfig config) {
+    /**
+     * Segments text strictly at individual sentence boundaries (punctuation {@code .}, {@code !}, {@code ?} followed by whitespace).
+     * Yields one atomic chunk per sentence, delivering minimal latency for real-time streaming speech.
+     *
+     * @param text The input text to segment
+     * @return Array of single-sentence {@link Chunk} objects
+     */
+    public Chunk[] chunkBySentence(String text) {
+        if (text == null || text.trim().isEmpty()) return new Chunk[0];
+        String[] raw = SENTENCE_PATTERN.split(text);
+        List<Chunk> result = new ArrayList<>();
+        int id = 0;
+        int searchFrom = 0;
+
+        for (String s : raw) {
+            String trimmed = s.trim();
+            if (trimmed.isEmpty()) continue;
+
+            int start = text.indexOf(trimmed, searchFrom);
+            if (start < 0) start = searchFrom;
+            int end = start + trimmed.length();
+            searchFrom = end;
+
+            result.add(new Chunk(
+                    id++,
+                    trimmed,
+                    "",
+                    trimmed,
+                    start,
+                    end,
+                    countTokens(trimmed)
+            ));
+        }
+        return result.toArray(new Chunk[0]);
+    }
+
+    /**
+     * Segments text using hardware-accelerated AVX2 SIMD token sliding windows.
+     * Enforces strict token count budgets with optional overlap tokens.
+     *
+     * @param text   The input text to tokenize
+     * @param config Configuration specifying maxTokens and overlapTokens
+     * @return Array of token-window {@link Chunk} objects
+     */
+    public Chunk[] chunkByTokenWindow(String text, ChunkConfig config) {
+        if (text == null || text.trim().isEmpty()) return new Chunk[0];
+        ChunkConfig cfg = config != null ? config : new ChunkConfig();
+        return FastContentChunkNative.chunkSafe(text, cfg.getMaxTokens(), cfg.getOverlapTokens());
+    }
+
+    /**
+     * Packs consecutive paragraphs into sliding windows without splitting individual paragraphs,
+     * continuing until the accumulated token budget ({@code maxTokens}) is reached.
+     *
+     * @param text   The input text containing paragraph blocks
+     * @param config Configuration defining the token budget and overlap
+     * @return Array of windowed paragraph {@link Chunk} objects
+     */
+    public Chunk[] chunkByParagraphWindow(String text, ChunkConfig config) {
+        if (text == null || text.trim().isEmpty()) return new Chunk[0];
+        ChunkConfig cfg = config != null ? config : new ChunkConfig();
         String[] paragraphs = text.split("(\\r?\\n){2,}");
         List<Chunk> result = new ArrayList<>();
         int id = 0;
@@ -52,7 +170,7 @@ public final class FastContentChunk {
 
             int paraTokens = countTokens(trimmed);
 
-            if (currentChunk.length() > 0 && countTokens(currentChunk.toString()) + paraTokens > config.getMaxTokens()) {
+            if (currentChunk.length() > 0 && countTokens(currentChunk.toString()) + paraTokens > cfg.getMaxTokens()) {
                 String chunkText = currentChunk.toString();
                 result.add(new Chunk(
                         id++,
@@ -64,8 +182,7 @@ public final class FastContentChunk {
                         countTokens(chunkText)
                 ));
 
-                // Calculate overlap
-                lastOverlap = extractTrailingTokens(chunkText, config.getOverlapTokens());
+                lastOverlap = extractTrailingTokens(chunkText, cfg.getOverlapTokens());
                 currentChunk = new StringBuilder(lastOverlap);
                 if (!lastOverlap.isEmpty()) currentChunk.append("\n\n");
                 startOffset = currentOffset;
@@ -96,7 +213,17 @@ public final class FastContentChunk {
         return result.toArray(new Chunk[0]);
     }
 
-    private Chunk[] chunkSentences(String text, ChunkConfig config) {
+    /**
+     * Packs consecutive sentences into sliding windows without cutting sentences in half,
+     * accumulating text until {@code maxTokens} is reached and transferring overlap tokens.
+     *
+     * @param text   The input text containing sentences
+     * @param config Configuration defining maximum window size and token overlap
+     * @return Array of windowed sentence {@link Chunk} objects
+     */
+    public Chunk[] chunkBySentenceWindow(String text, ChunkConfig config) {
+        if (text == null || text.trim().isEmpty()) return new Chunk[0];
+        ChunkConfig cfg = config != null ? config : new ChunkConfig();
         String[] sentences = SENTENCE_PATTERN.split(text);
         List<Chunk> result = new ArrayList<>();
         int id = 0;
@@ -112,7 +239,7 @@ public final class FastContentChunk {
 
             int sentenceTokens = countTokens(trimmed);
 
-            if (currentChunk.length() > 0 && countTokens(currentChunk.toString()) + sentenceTokens > config.getMaxTokens()) {
+            if (currentChunk.length() > 0 && countTokens(currentChunk.toString()) + sentenceTokens > cfg.getMaxTokens()) {
                 String chunkText = currentChunk.toString();
                 result.add(new Chunk(
                         id++,
@@ -124,7 +251,7 @@ public final class FastContentChunk {
                         countTokens(chunkText)
                 ));
 
-                lastOverlap = extractTrailingTokens(chunkText, config.getOverlapTokens());
+                lastOverlap = extractTrailingTokens(chunkText, cfg.getOverlapTokens());
                 currentChunk = new StringBuilder(lastOverlap);
                 if (!lastOverlap.isEmpty()) currentChunk.append(" ");
                 startOffset = currentOffset;
@@ -155,8 +282,17 @@ public final class FastContentChunk {
         return result.toArray(new Chunk[0]);
     }
 
-    private Chunk[] chunkRecursive(String text, ChunkConfig config) {
-        // Step 1: Attempt Paragraph Splitting
+    /**
+     * Recursively decomposes text down a hierarchy: paragraphs that exceed {@code maxTokens}
+     * are further split into sentence chunks, and sentence chunks exceeding the budget fall back to SIMD token chunks.
+     *
+     * @param text   The raw document text
+     * @param config Configuration governing token limits and overlap
+     * @return Array of hierarchical {@link Chunk} objects
+     */
+    public Chunk[] chunkHierarchical(String text, ChunkConfig config) {
+        if (text == null || text.trim().isEmpty()) return new Chunk[0];
+        ChunkConfig cfg = config != null ? config : new ChunkConfig();
         String[] paragraphs = text.split("(\\r?\\n){2,}");
         List<Chunk> result = new ArrayList<>();
         int id = 0;
@@ -168,19 +304,17 @@ public final class FastContentChunk {
 
             int paraTokens = countTokens(trimmed);
 
-            if (paraTokens <= config.getMaxTokens()) {
-                // Fits in a single chunk
+            if (paraTokens <= cfg.getMaxTokens()) {
                 result.add(new Chunk(id++, trimmed, lastOverlap, trimmed, 0, trimmed.length(), paraTokens));
-                lastOverlap = extractTrailingTokens(trimmed, config.getOverlapTokens());
+                lastOverlap = extractTrailingTokens(trimmed, cfg.getOverlapTokens());
             } else {
-                // Step 2: Fall back to Sentence Splitting for long paragraphs
-                Chunk[] sentenceChunks = chunkSentences(trimmed, config);
+                Chunk[] sentenceChunks = chunkBySentenceWindow(trimmed, cfg);
                 for (Chunk sc : sentenceChunks) {
                     result.add(new Chunk(
                             id++,
                             sc.text,
                             lastOverlap,
-                            trimmed, // Parent context is the full paragraph
+                            trimmed,
                             sc.startCharOffset,
                             sc.endCharOffset,
                             sc.tokenCount

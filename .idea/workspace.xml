@@ -4,11 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="28525b44-e56e-4f0a-9e18-24718bd7fb36" name="Changes" comment="" />
+    <list default="true" id="28525b44-e56e-4f0a-9e18-24718bd7fb36" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/fastchunk.dll" beforeDir="false" afterPath="$PROJECT_DIR$/build/fastchunk.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/fastchunk.exp" beforeDir="false" afterPath="$PROJECT_DIR$/build/fastchunk.exp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/fastchunk.lib" beforeDir="false" afterPath="$PROJECT_DIR$/build/fastchunk.lib" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/fastchunk.obj" beforeDir="false" afterPath="$PROJECT_DIR$/build/fastchunk.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/jni_fastchunk.obj" beforeDir="false" afterPath="$PROJECT_DIR$/build/jni_fastchunk.obj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compile.bat" beforeDir="false" afterPath="$PROJECT_DIR$/compile.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/native/fastchunk/jni_fastchunk.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/native/fastchunk/jni_fastchunk.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fastcontentchunk/Chunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fastcontentchunk/Chunk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fastcontentchunk/ChunkConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fastcontentchunk/ChunkConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fastcontentchunk/ChunkMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fastcontentchunk/ChunkMode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fastcontentchunk/FastContentChunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fastcontentchunk/FastContentChunk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/fastcontentchunk/FastContentChunkNative.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fastcontentchunk/FastContentChunkNative.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/fastcontentchunk/FastContentChunkTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/fastcontentchunk/FastContentChunkTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1,
@@ -24,8 +42,11 @@
     "CidrDebugProfileConversion": "true",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/andre/Documents/2026-06-14-Work-FastJava/FastContentChunk/docs"
+    "last_opened_file_path": "C:/Users/andre/Documents/2026-08-17-Work-FastJava/FastContentChunk"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -36,13 +57,6 @@
       <recent name="C:\Users\andre\Documents\2026-06-14-Work-FastJava\FastContentChunk\docs" />
     </key>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-63390994e64e-intellij.indexing.shared.core-IU-262.8665.337" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="28525b44-e56e-4f0a-9e18-24718bd7fb36" name="Changes" comment="" />
@@ -52,5 +66,8 @@
       <updated>1786093642663</updated>
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

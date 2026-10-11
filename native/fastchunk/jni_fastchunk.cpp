@@ -30,7 +30,7 @@ Java_fastcontentchunk_FastContentChunkNative_chunk(
 
     env->ReleaseStringUTFChars(jtext, utf);
 
-    jclass chunkClass = env->FindClass("fastcontentchunk/FastContentChunkNative$Chunk");
+    jclass chunkClass = env->FindClass("fastcontentchunk/Chunk");
     if (chunkClass == nullptr || env->ExceptionCheck()) {
         env->ExceptionClear();
         return nullptr;

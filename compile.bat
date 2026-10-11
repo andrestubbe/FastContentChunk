@@ -30,11 +30,11 @@ if not defined VS_PATH (
 echo Found Visual Studio at: %VS_PATH%
 
 if not defined JAVA_HOME (
-    if exist "C:\Program Files\Java\jdk-25.0.3" (
+    if exist "C:\Program Files\Java\jdk-21.0.12.1\include\jni.h" (
+        set "JAVA_HOME=C:\Program Files\Java\jdk-21.0.12.1"
+    ) else if exist "C:\Program Files\Java\jdk-25.0.3\include\jni.h" (
         set "JAVA_HOME=C:\Program Files\Java\jdk-25.0.3"
-    ) else if exist "C:\Program Files\Java\jdk-21.0.12" (
-        set "JAVA_HOME=C:\Program Files\Java\jdk-21.0.12"
-    ) else if exist "C:\Program Files\Java\latest" (
+    ) else if exist "C:\Program Files\Java\latest\include\jni.h" (
         set "JAVA_HOME=C:\Program Files\Java\latest"
     )
 )
